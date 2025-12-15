@@ -10,7 +10,7 @@ from PIL import Image
 path = os.path.dirname(os.path.abspath(__file__))
 #print(path)
 # создаём новый распознаватель лиц
-recognizer = cv2.face.LBPHFaceRecognizer_create(1,8,8,8,123)
+recognizer = cv2.face.LBPHFaceRecognizer_create(1,10,8,8,100)
 # указываем, что мы будем искать лица по примитивам Хаара
 faceCascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
 # путь к датасету с фотографиями пользователей
@@ -36,7 +36,7 @@ def get_images_and_labels(datapath):
          #print(nbr)
          #return 1
          # определяем лицо на картинке
-         faces = faceCascade.detectMultiScale(image)
+         faces = faceCascade.detectMultiScale(image, minNeighbors=16, minSize=(64, 64))
          # если лицо найдено
          
          for (x, y, w, h) in faces:
@@ -46,11 +46,11 @@ def get_images_and_labels(datapath):
              labels.append(nbr)
              # выводим текущую картинку на экран
              im=image[y: y + h, x: x + w]
-             print(nbr)
+             #print(nbr)
              #cv2.putText(im,str(nbr), (x,y+h),font, 1.1, (0,255,0))
              cv2.imshow("Adding faces to traning set...", im)
              # делаем паузу
-             cv2.waitKey(1000)
+             cv2.waitKey(10)
      # возвращаем список картинок и подписей
      return images, labels
 
