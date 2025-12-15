@@ -8,13 +8,15 @@ import numpy as np
 from PIL import Image 
 # получаем путь к этому скрипту
 path = os.path.dirname(os.path.abspath(__file__))
+#print(path)
 # создаём новый распознаватель лиц
-recognizer = cv2.face.LBPHFaceRecognizer_create()
+recognizer = cv2.face.LBPHFaceRecognizer_create(1,8,8,8,123)
 # указываем, что мы будем искать лица по примитивам Хаара
 faceCascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
 # путь к датасету с фотографиями пользователей
 dataPath = path+r'/data_set'
-
+#print(dataPath)
+font = cv2.FONT_HERSHEY_SIMPLEX
 # получаем картинки и подписи из датасета
 def get_images_and_labels(datapath):
      # получаем путь к картинкам
@@ -22,6 +24,7 @@ def get_images_and_labels(datapath):
      # списки картинок и подписей на старте пустые
      images = []
      labels = []
+
      # перебираем все картинки в датасете 
      for image_path in image_paths:
          # читаем картинку и сразу переводим в ч/б
@@ -29,19 +32,25 @@ def get_images_and_labels(datapath):
          # переводим картинку в numpy-массив
          image = np.array(image_pil, 'uint8')
          # получаем id пользователя из имени файла
-         nbr =(os.path.split(image_path)[1].split("."))
+         nbr =int((os.path.split(image_path)[1].split(".")[0].split("_"))[0])
+         #print(nbr)
+         #return 1
          # определяем лицо на картинке
-         faces = faceCascade.detectMultiScale(image)
+         faces = faceCascade.detectMultiScale(image, scaleFactor=1.1, minNeighbors=5, minSize=(50, 50))
          # если лицо найдено
+         
          for (x, y, w, h) in faces:
              # добавляем его к списку картинок 
              images.append(image[y: y + h, x: x + w])
              # добавляем id пользователя в список подписей
              labels.append(nbr)
              # выводим текущую картинку на экран
-             cv2.imshow("Adding faces to traning set...", image[y: y + h, x: x + w])
+             im=image[y: y + h, x: x + w]
+             print(nbr)
+             #cv2.putText(im,str(nbr), (x,y+h),font, 1.1, (0,255,0))
+             cv2.imshow("Adding faces to traning set...", im)
              # делаем паузу
-             cv2.waitKey(100)
+             cv2.waitKey(1000)
      # возвращаем список картинок и подписей
      return images, labels
 
@@ -51,5 +60,6 @@ images, labels = get_images_and_labels(dataPath)
 recognizer.train(images, np.array(labels))
 # сохраняем модель
 recognizer.save(path+r'/trainer/trainer.yml')
+print(path+r'/trainer/trainer.yml')
 # удаляем из памяти все созданные окнаы
-cv2.destroyAllWindows()
+#cv2.destroyAllWindows()
