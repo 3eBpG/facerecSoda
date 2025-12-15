@@ -36,7 +36,7 @@ def get_images_and_labels(datapath):
          #print(nbr)
          #return 1
          # определяем лицо на картинке
-         faces = faceCascade.detectMultiScale(image, scaleFactor=1.1, minNeighbors=5, minSize=(50, 50))
+         faces = faceCascade.detectMultiScale(image)
          # если лицо найдено
          
          for (x, y, w, h) in faces:
