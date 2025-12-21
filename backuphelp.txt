@@ -1,0 +1,13 @@
+0. Создать дамп
+pg_dump -U postgres <имя БД> -f backup.sql
+
+1. Создать базу данных 
+Create databased <имя БД>
+1.1 Если база уже создана то можно удалить
+drop databased <имя БД>
+
+2. загрузить dump
+psql -U postgres <имя БД> -f backup.sql
+или
+psql -U postgres <имя БД>
+\i backup.sql
