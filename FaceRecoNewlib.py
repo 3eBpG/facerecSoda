@@ -2,6 +2,7 @@ import face_recognition
 import cv2
 import numpy as np
 import os
+import pickle
 # This is a demo of running face recognition on live video from your webcam. It's a little more complicated than the
 # other example, but it includes some basic performance tweaks to make things run a lot faster:
 #   1. Process each video frame at 1/4 resolution (though still display it at full resolution)
@@ -17,37 +18,39 @@ import os
 known_face_encodings = []
 known_face_names = []
 path = os.path.dirname(os.path.abspath(__file__))
-datapath = path+r'/data_set3'
-image_paths = [os.path.join(datapath, f) for f in os.listdir(datapath)]
-for image_path in image_paths:
-        # читаем картинку и сразу переводим в ч/б
-        #image = Image.open(image_path)
-        img = cv2.imread(image_path)[:,:,::-1]
-        img= cv2.cvtColor(img , cv2.COLOR_BGR2RGB)
-        print(image_path)
-        x_image = face_recognition.load_image_file(image_path)
-        #print(x_image)
-        #x_face_encoding = face_recognition.face_encodings(img)[0]
-        x_temp_encd = face_recognition.face_encodings(img)
-        if len(x_temp_encd)>0:
-            x_face_encoding=x_temp_encd[0]
-        else:
-            print("dunno looks like bro cant find a face")
-        nbr =((os.path.split(image_path)[1].split(".")[0].split("_"))[0])
-        known_face_encodings.append(x_face_encoding)
-        known_face_names.append(nbr)
-        #cv2.imshow("Adding faces to traning set...", im)
-         
+####datapath = path+r'/data_set3'
+####image_paths = [os.path.join(datapath, f) for f in os.listdir(datapath)]
+####for image_path in image_paths:
+####        # читаем картинку и сразу переводим в ч/б
+####        #image = Image.open(image_path)
+####        img = cv2.imread(image_path)[:,:,::-1]
+####        img= cv2.cvtColor(img , cv2.COLOR_BGR2RGB)
+####        print(image_path)
+####        x_image = face_recognition.load_image_file(image_path)
+####        #print(x_image)
+####        #x_face_encoding = face_recognition.face_encodings(img)[0]
+####        x_temp_encd = face_recognition.face_encodings(img)
+####        if len(x_temp_encd)>0:
+####            x_face_encoding=x_temp_encd[0]
+####        else:
+####            print("dunno looks like bro cant find a face")
+####        nbr =((os.path.split(image_path)[1].split(".")[0].split("_"))[1])
+####        known_face_encodings.append(x_face_encoding)
+####        known_face_names.append(nbr)
+####        #cv2.imshow("Adding faces to traning set...", im)
+####
+####all_face_encodings={}
+####all_face_encodings.fromkeys(known_face_names[,known_face_encodings]
 print("xd")
 ##f=open(path+r'\base\knownFace.txt','w')
 ##f.write(known_face_encodings[0])
-# Load a sample picture and learn how to recognize it.
-##obama_image = face_recognition.load_image_file("13_KA_2.jpg")
-##obama_face_encoding = face_recognition.face_encodings(obama_image)[0]
-##
-### Load a second sample picture and learn how to recognize it.
-##biden_image = face_recognition.load_image_file("8_VS_1.jpg")
-##biden_face_encoding = face_recognition.face_encodings(biden_image)[0]
+
+with open(path+r'\base\knownFace.dat', 'rb') as f:
+	all_face_encodings = pickle.load(f)
+
+# Grab the list of names and the list of encodings
+known_face_names = list(all_face_encodings.keys())
+known_face_encodings = np.array(list(all_face_encodings.values()))
 
 
 
