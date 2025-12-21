@@ -1,13 +1,13 @@
-0. Создать дамп
-pg_dump -U postgres <имя БД> -f backup.sql
+0. РЎРѕР·РґР°С‚СЊ РґР°РјРї
+pg_dump -U postgres <РёРјСЏ Р‘Р”> -f backup.sql
 
-1. Создать базу данных 
-Create databased <имя БД>
-1.1 Если база уже создана то можно удалить
-drop databased <имя БД>
+1. РЎРѕР·РґР°С‚СЊ Р±Р°Р·Сѓ РґР°РЅРЅС‹С… 
+Create databased <РёРјСЏ Р‘Р”>
+1.1 Р•СЃР»Рё Р±Р°Р·Р° СѓР¶Рµ СЃРѕР·РґР°РЅР° С‚Рѕ РјРѕР¶РЅРѕ СѓРґР°Р»РёС‚СЊ
+drop databased <РёРјСЏ Р‘Р”>
 
-2. загрузить dump
-psql -U postgres <имя БД> -f backup.sql
-или
-psql -U postgres <имя БД>
+2. Р·Р°РіСЂСѓР·РёС‚СЊ dump
+psql -U postgres <РёРјСЏ Р‘Р”> -f backup.sql
+РёР»Рё
+psql -U postgres <РёРјСЏ Р‘Р”>
 \i backup.sql
